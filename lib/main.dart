@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'dart:convert';
 
 void main() {
@@ -306,14 +307,20 @@ class MainPage extends StatelessWidget {
           ),
           Container(
             margin: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 20.0),
-            child: Center(
-              child: Text(
-                'Stock Prediction',
-                style: TextStyle(
-                  fontSize: 28.0,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'OxygenMono',
-                  color: Colors.white,
+            child: GestureDetector(
+            onTap: (){
+            Navigator.push(
+            context, MaterialPageRoute(builder: (_) => Stock()));
+            },
+              child: Center(
+                child: Text(
+                  'Stock Prediction',
+                  style: TextStyle(
+                    fontSize: 28.0,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'OxygenMono',
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
@@ -509,6 +516,26 @@ class Credential extends StatelessWidget {
   }
 }
 
+class Stock extends StatefulWidget {
+  const Stock({key}) : super(key: key);
+
+  @override
+  _StockState createState() => _StockState();
+}
+
+class _StockState extends State<Stock> {
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      body: const WebView(
+        initialUrl: 'http://stocks-dash.herokuapp.com/',
+        javascriptMode: JavascriptMode.unrestricted,
+      ),
+    );
+  }
+}
+
+
 class Loan extends StatefulWidget {
   const Loan({key}) : super(key: key);
 
@@ -518,20 +545,51 @@ class Loan extends StatefulWidget {
 
 class _LoanState extends State<Loan> {
 
+  var mean = [
+    2507.902444,
+    45.350222,
+    20.118889,
+    73.711556,
+    93149.362667,
+    2.392444,
+    1.937462,
+    1.880000,
+    56.123333,
+    0.105556,
+    0.061111,
+    0.595111,
+    0.293778
+  ];
+  var std = [
+    1443.476936,
+    11.442484,
+    11.447080,
+    46.055784,
+    2161.944212,
+    1.141368,
+    1.748485,
+    0.839829,
+    101.338066,
+    0.307302,
+    0.239561,
+    0.490925,
+    0.455542
+  ];
+
   Interpreter interpreter;
-  var age = 10;
-  var exp = 10;
-  var income = 10;
-  var zip = 10;
-  var fam = 10;
-  var cc = 10;
-  var edu = 10;
-  var mort = 10;
-  var loan = 10;
-  var sec = 10;
-  var cda = 10;
-  var online = 10;
-  var cred = 10;
+  String approved;
+  double age;
+  double exp;
+  double income;
+  double zip;
+  double fam;
+  double cc;
+  double edu;
+  double mort;
+  double sec;
+  double cda;
+  double online;
+  double cred;
 
 
   @override
@@ -613,7 +671,7 @@ class _LoanState extends State<Loan> {
                         hintStyle: TextStyle(color: Colors.white),
                       ),
                       onSubmitted: (val) {
-                        age = int.parse(val);
+                        age = double.parse(val);
                       },
                     ),
                   ),
@@ -634,7 +692,7 @@ class _LoanState extends State<Loan> {
                         hintStyle: TextStyle(color: Colors.white),
                       ),
                       onSubmitted: (val) {
-                        exp = int.parse(val);
+                        exp = double.parse(val);
                       },
                     ),
                   ),
@@ -655,7 +713,7 @@ class _LoanState extends State<Loan> {
                         hintStyle: TextStyle(color: Colors.white),
                       ),
                       onSubmitted: (val) {
-                        income = int.parse(val);
+                        income = double.parse(val);
                       },
                     ),
                   ),
@@ -676,7 +734,7 @@ class _LoanState extends State<Loan> {
                         hintStyle: TextStyle(color: Colors.white),
                       ),
                       onSubmitted: (val) {
-                        zip = int.parse(val);
+                        zip = double.parse(val);
                       },
                     ),
                   ),
@@ -697,7 +755,7 @@ class _LoanState extends State<Loan> {
                         hintStyle: TextStyle(color: Colors.white),
                       ),
                       onSubmitted: (val) {
-                        fam = int.parse(val);
+                        fam = double.parse(val);
                       },
                     ),
                   ),
@@ -718,7 +776,7 @@ class _LoanState extends State<Loan> {
                         hintStyle: TextStyle(color: Colors.white),
                       ),
                       onSubmitted: (val) {
-                        cc = int.parse(val);
+                        cc = double.parse(val);
                       },
                     ),
                   ),
@@ -739,7 +797,7 @@ class _LoanState extends State<Loan> {
                         hintStyle: TextStyle(color: Colors.white),
                       ),
                       onSubmitted: (val) {
-                        edu = int.parse(val);
+                        edu = double.parse(val);
                       },
                     ),
                   ),
@@ -760,28 +818,7 @@ class _LoanState extends State<Loan> {
                         hintStyle: TextStyle(color: Colors.white),
                       ),
                       onSubmitted: (val) {
-                        mort = int.parse(val);
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 5.0),
-                    child: TextField(
-                      keyboardType: TextInputType.number,
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                      decoration: InputDecoration(
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                          ),
-                        ),
-                        hintText: 'Number of Personal Loans',
-                        hintStyle: TextStyle(color: Colors.white),
-                      ),
-                      onSubmitted: (val) {
-                        loan = int.parse(val);
+                        mort = double.parse(val);
                       },
                     ),
                   ),
@@ -802,7 +839,7 @@ class _LoanState extends State<Loan> {
                         hintStyle: TextStyle(color: Colors.white),
                       ),
                       onSubmitted: (val) {
-                        sec = int.parse(val);
+                        sec = double.parse(val);
                       },
                     ),
                   ),
@@ -823,7 +860,7 @@ class _LoanState extends State<Loan> {
                         hintStyle: TextStyle(color: Colors.white),
                       ),
                       onSubmitted: (val) {
-                        cda = int.parse(val);
+                        cda = double.parse(val);
                       },
                     ),
                   ),
@@ -844,7 +881,7 @@ class _LoanState extends State<Loan> {
                         hintStyle: TextStyle(color: Colors.white),
                       ),
                       onSubmitted: (val) {
-                        online = int.parse(val);
+                        online = double.parse(val);
                       },
                     ),
                   ),
@@ -865,7 +902,7 @@ class _LoanState extends State<Loan> {
                         hintStyle: TextStyle(color: Colors.white),
                       ),
                       onSubmitted: (val) {
-                        cred = int.parse(val);
+                        cred = double.parse(val);
                       },
                     ),
                   ),
@@ -924,6 +961,7 @@ class _LoanState extends State<Loan> {
     interpreter.run(inputArr, output);
     // print the output
     print(output[0]);
+
     // setState(() {
     //   result = output[0][0].toStringAsFixed(2) + " MPG";
     //   print(result);
