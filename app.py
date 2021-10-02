@@ -71,7 +71,7 @@ app.layout = html.Div(
                     dcc.Dropdown(id='demo-dropdown',
                                 options=[
                                         {'label': 'SVC', 'value': 'SVC'},
-                                        {'label': 'TBATS', 'value': 'TBATS'},
+                                        {'label': 'LSTM', 'value': 'LSTM'},
                                         
                                         ],
                                 value='SVC',placeholder='model'
