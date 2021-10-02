@@ -277,7 +277,7 @@ class MainPage extends StatelessWidget {
             child: GestureDetector(
               onTap: (){
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => Credential()));
+                    context, MaterialPageRoute(builder: (_) => Cred()));
               },
               child: Center(
                 child: Text(
@@ -405,6 +405,26 @@ class MainPage extends StatelessWidget {
     );
   }
 }
+
+class Cred extends StatefulWidget {
+  const Cred({key}) : super(key: key);
+
+  @override
+  _CredState createState() => _CredState();
+}
+
+class _CredState extends State<Cred> {
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      body: const WebView(
+        initialUrl: 'https://haveibeenpwned.com/',
+        javascriptMode: JavascriptMode.unrestricted,
+      ),
+    );
+  }
+}
+
 
 class Credential extends StatelessWidget {
   const Credential({key}) : super(key: key);
