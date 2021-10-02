@@ -714,17 +714,18 @@ class _LoanState extends State<Loan> {
                             color: Colors.white,
                           ),
                         ),
-                        hintText: 'Self Employed? (Y/N)',
+                        hintText: 'CC Avg',
                         hintStyle: TextStyle(color: Colors.white),
                       ),
                       onSubmitted: (val) {
-                        age = int.parse(val);
+                        cc = int.parse(val);
                       },
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 5.0),
                     child: TextField(
+                      keyboardType: TextInputType.number,
                       style: TextStyle(
                         color: Colors.white,
                       ),
@@ -734,14 +735,18 @@ class _LoanState extends State<Loan> {
                             color: Colors.white,
                           ),
                         ),
-                        hintText: 'Applicant Income',
+                        hintText: 'Education (no. of degrees)',
                         hintStyle: TextStyle(color: Colors.white),
                       ),
+                      onSubmitted: (val) {
+                        edu = int.parse(val);
+                      },
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 5.0),
                     child: TextField(
+                      keyboardType: TextInputType.number,
                       style: TextStyle(
                         color: Colors.white,
                       ),
@@ -751,14 +756,18 @@ class _LoanState extends State<Loan> {
                             color: Colors.white,
                           ),
                         ),
-                        hintText: 'Loan Amount (in thousands)',
+                        hintText: 'Number of Mortgages',
                         hintStyle: TextStyle(color: Colors.white),
                       ),
+                      onSubmitted: (val) {
+                        mort = int.parse(val);
+                      },
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 5.0),
                     child: TextField(
+                      keyboardType: TextInputType.number,
                       style: TextStyle(
                         color: Colors.white,
                       ),
@@ -768,9 +777,96 @@ class _LoanState extends State<Loan> {
                             color: Colors.white,
                           ),
                         ),
-                        hintText: 'Loan term (in months)',
+                        hintText: 'Number of Personal Loans',
                         hintStyle: TextStyle(color: Colors.white),
                       ),
+                      onSubmitted: (val) {
+                        loan = int.parse(val);
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 5.0),
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                      decoration: InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                          ),
+                        ),
+                        hintText: 'Number of Securities Account',
+                        hintStyle: TextStyle(color: Colors.white),
+                      ),
+                      onSubmitted: (val) {
+                        sec = int.parse(val);
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 5.0),
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                      decoration: InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                          ),
+                        ),
+                        hintText: 'Number of CD accounts',
+                        hintStyle: TextStyle(color: Colors.white),
+                      ),
+                      onSubmitted: (val) {
+                        cda = int.parse(val);
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 5.0),
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                      decoration: InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                          ),
+                        ),
+                        hintText: 'Number of Online accounts',
+                        hintStyle: TextStyle(color: Colors.white),
+                      ),
+                      onSubmitted: (val) {
+                        online = int.parse(val);
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 5.0),
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                      decoration: InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                          ),
+                        ),
+                        hintText: 'Number of credit cards',
+                        hintStyle: TextStyle(color: Colors.white),
+                      ),
+                      onSubmitted: (val) {
+                        cred = int.parse(val);
+                      },
                     ),
                   ),
                 ],
@@ -835,7 +931,6 @@ class _LoanState extends State<Loan> {
   }
 
 }
-
 
 class PassPage extends StatelessWidget {
   const PassPage({key}) : super(key: key);
@@ -972,3 +1067,4 @@ class PassPage extends StatelessWidget {
     );
   }
 }
+
