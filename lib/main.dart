@@ -577,18 +577,20 @@ class _LoanState extends State<Loan> {
 
   Interpreter interpreter;
   String approved;
-  double age = 10.0;
-  double exp = 10.0;
-  double income = 10.0;
-  double zip = 10.0;
-  double fam = 10.0;
+  int age = 20;
+  int exp = 10;
+  int income = 10;
+  int zip = 93023;
+  int fam = 2;
   double cc = 10.0;
-  double edu = 10.0;
-  double mort = 10.0;
-  double sec = 10.0;
-  double cda = 10.0;
-  double online = 10.0;
-  double cred = 10.0;
+  int edu = 1;
+  int mort = 1;
+  int sec = 1;
+  int cda = 1;
+  int online = 1;
+  int cred = 1;
+
+  double dage, dexp, dincome, dzip, dfam, dedu, dmort, dsec, dcda, donline, dcred;
 
 
   @override
@@ -670,7 +672,8 @@ class _LoanState extends State<Loan> {
                         hintStyle: TextStyle(color: Colors.white),
                       ),
                       onSubmitted: (val) {
-                        age = double.parse(val);
+                        age = int.parse(val);
+                        dage = age.toDouble();
                       },
                     ),
                   ),
@@ -691,7 +694,8 @@ class _LoanState extends State<Loan> {
                         hintStyle: TextStyle(color: Colors.white),
                       ),
                       onSubmitted: (val) {
-                        exp = double.parse(val);
+                        exp = int.parse(val);
+                        dexp = exp.toDouble();
                       },
                     ),
                   ),
@@ -712,7 +716,8 @@ class _LoanState extends State<Loan> {
                         hintStyle: TextStyle(color: Colors.white),
                       ),
                       onSubmitted: (val) {
-                        income = double.parse(val);
+                        income = int.parse(val);
+                        dincome = income.toDouble();
                       },
                     ),
                   ),
@@ -733,7 +738,8 @@ class _LoanState extends State<Loan> {
                         hintStyle: TextStyle(color: Colors.white),
                       ),
                       onSubmitted: (val) {
-                        zip = double.parse(val);
+                        zip = int.parse(val);
+                        dzip = zip.toDouble();
                       },
                     ),
                   ),
@@ -754,7 +760,8 @@ class _LoanState extends State<Loan> {
                         hintStyle: TextStyle(color: Colors.white),
                       ),
                       onSubmitted: (val) {
-                        fam = double.parse(val);
+                        fam = int.parse(val);
+                        dfam = fam.toDouble();
                       },
                     ),
                   ),
@@ -796,7 +803,8 @@ class _LoanState extends State<Loan> {
                         hintStyle: TextStyle(color: Colors.white),
                       ),
                       onSubmitted: (val) {
-                        edu = double.parse(val);
+                        edu = int.parse(val);
+                        dedu = edu.toDouble();
                       },
                     ),
                   ),
@@ -813,11 +821,12 @@ class _LoanState extends State<Loan> {
                             color: Colors.white,
                           ),
                         ),
-                        hintText: 'Number of Mortgages',
+                        hintText: 'Mortgage (in thousands)',
                         hintStyle: TextStyle(color: Colors.white),
                       ),
                       onSubmitted: (val) {
-                        mort = double.parse(val);
+                        mort = int.parse(val);
+                        dmort = mort.toDouble();
                       },
                     ),
                   ),
@@ -834,11 +843,12 @@ class _LoanState extends State<Loan> {
                             color: Colors.white,
                           ),
                         ),
-                        hintText: 'Number of Securities Account',
+                        hintText: 'Securities Account (1-yes, 0-no)',
                         hintStyle: TextStyle(color: Colors.white),
                       ),
                       onSubmitted: (val) {
-                        sec = double.parse(val);
+                        sec = int.parse(val);
+                        dsec = sec.toDouble();
                       },
                     ),
                   ),
@@ -855,11 +865,12 @@ class _LoanState extends State<Loan> {
                             color: Colors.white,
                           ),
                         ),
-                        hintText: 'Number of CD accounts',
+                        hintText: 'CD accounts (1-yes, 0-no)',
                         hintStyle: TextStyle(color: Colors.white),
                       ),
                       onSubmitted: (val) {
-                        cda = double.parse(val);
+                        cda = int.parse(val);
+                        dcda = cda.toDouble();
                       },
                     ),
                   ),
@@ -876,11 +887,12 @@ class _LoanState extends State<Loan> {
                             color: Colors.white,
                           ),
                         ),
-                        hintText: 'Number of Online accounts',
+                        hintText: 'Online accounts (1-yes, 0-no)',
                         hintStyle: TextStyle(color: Colors.white),
                       ),
                       onSubmitted: (val) {
-                        online = double.parse(val);
+                        online = int.parse(val);
+                        donline = online.toDouble();
                       },
                     ),
                   ),
@@ -897,11 +909,12 @@ class _LoanState extends State<Loan> {
                             color: Colors.white,
                           ),
                         ),
-                        hintText: 'Number of credit cards',
+                        hintText: 'Credit cards',
                         hintStyle: TextStyle(color: Colors.white),
                       ),
                       onSubmitted: (val) {
-                        cred = double.parse(val);
+                        cred = int.parse(val);
+                        dcred = cred.toDouble();
                       },
                     ),
                   ),
@@ -912,6 +925,7 @@ class _LoanState extends State<Loan> {
           OutlinedButton(
             onPressed: () {
               doInference();
+              showAlertDialog(context);
             },
             child: Text(
               'CONFIRM',
@@ -928,12 +942,40 @@ class _LoanState extends State<Loan> {
               ),
               side: BorderSide(width: 2.0, color: Colors.white),
             ),
-          )
+          ),
         ],
       ),
     );
   }
 
+    showAlertDialog(BuildContext context) {
+
+      // set up the button
+      Widget okButton = TextButton(
+        child: Text("OK"),
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (_) => Loan()));
+        },
+      );
+
+      // set up the AlertDialog
+      AlertDialog alert = AlertDialog(
+        title: Text("Is loan approved?"),
+        content: Text("$approved"),
+        actions: [
+          okButton,
+        ],
+      );
+
+      // show the dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+    }
 
   doInference() {
 
@@ -959,7 +1001,19 @@ class _LoanState extends State<Loan> {
     // inference
     interpreter.run(inputArr, output);
     // print the output
-    print(output[0]);
+    print(output[0][0]);
+    print(output[0][1]);
+
+    if(output[0][0]>output[0][1]){
+      setState(() {
+        approved = 'Loan will not be approved';
+      });
+    }
+    else{
+      setState(() {
+        approved = 'Loan will be approved!!!';
+      });
+    }
 
     // setState(() {
     //   result = output[0][0].toStringAsFixed(2) + " MPG";
