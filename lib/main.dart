@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'dart:convert';
 
 void main() {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
@@ -578,18 +577,18 @@ class _LoanState extends State<Loan> {
 
   Interpreter interpreter;
   String approved;
-  double age;
-  double exp;
-  double income;
-  double zip;
-  double fam;
-  double cc;
-  double edu;
-  double mort;
-  double sec;
-  double cda;
-  double online;
-  double cred;
+  double age = 10.0;
+  double exp = 10.0;
+  double income = 10.0;
+  double zip = 10.0;
+  double fam = 10.0;
+  double cc = 10.0;
+  double edu = 10.0;
+  double mort = 10.0;
+  double sec = 10.0;
+  double cda = 10.0;
+  double online = 10.0;
+  double cred = 10.0;
 
 
   @override
@@ -940,18 +939,18 @@ class _LoanState extends State<Loan> {
 
     var inputArr = [
       -1.736711,
-      -1.778479,
-      -1.670198,
-      -0.536557,
-      -0.944688,
-      1.408446,
-      -0.193003,
-      -1.047833,
-      -0.553823,
-      2.910636,
-      -0.255097,
-      -1.212224,
-      -0.644897
+      (age - mean[1]) / std[1],
+      (exp - mean[2]) / std[2],
+      (income - mean[3]) / std[3],
+      (zip - mean[4]) / std[4],
+      (fam - mean[5]) / std[5],
+      (cc - mean[6]) / std[6],
+      (edu - mean[7]) / std[7],
+      (mort - mean[8]) / std[8],
+      (sec - mean[9]) / std[9],
+      (cda - mean[10]) / std[10],
+      (online - mean[11]) / std[11],
+      (cred - mean[12]) / std[12]
     ];
 
 
