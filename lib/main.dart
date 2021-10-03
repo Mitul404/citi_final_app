@@ -546,9 +546,11 @@ class _StockState extends State<Stock> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: const WebView(
-        initialUrl: 'http://stocks-dash.herokuapp.com/',
-        javascriptMode: JavascriptMode.unrestricted,
+      body: SafeArea(
+        child: const WebView(
+          initialUrl: 'http://stocks-dash.herokuapp.com/',
+          javascriptMode: JavascriptMode.unrestricted,
+        ),
       ),
     );
   }
