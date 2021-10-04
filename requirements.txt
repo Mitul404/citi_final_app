@@ -9,6 +9,7 @@ pandas==1.2.4
 dash==1.16.2
 keras==2.6.0
 scikit_learn==1.0
+gunicorn
 
 
 
