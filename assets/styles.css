@@ -14,10 +14,10 @@
   
   .nav {
     /*position: fixed;*/
-    width: 25vw;
+    /* width: 25vw; */
     /* height: 100%; */
     align-items: center;
-    display: flex;
+    /* display: flex; */
     justify-content: flex-start;
     flex-direction: column;
     background-color: rgb(5, 107, 107);
