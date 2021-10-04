@@ -2,7 +2,7 @@ yfinance==0.1.63
 dash_html_components==1.1.1
 numpy==1.20.3
 dash_core_components==1.12.1
-tensorflow==2.5.0
+tensorflow-cpu==2.5.0
 plotly==4.10.0
 keras_nightly==2.5.0.dev2021032900
 pandas==1.2.4 

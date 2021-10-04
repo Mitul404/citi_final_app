@@ -181,7 +181,7 @@ def forecast(n, n_days, val,model):
         raise PreventUpdate
     print(model)
     if model == 'SVC':
-        fig = SVMprediction(val, int(n_days) )
+        fig = SVMprediction(val, int(n_days))
     else:
         fig=lstmpred(val,int(n_days))
 
