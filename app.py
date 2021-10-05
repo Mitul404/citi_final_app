@@ -52,7 +52,7 @@ app.layout = html.Div(
                 # Navigation
                 html.P("Welcome to the Stock Dash App!", className="start"),
                 html.Div([
-                    html.P("Input stock code: "),
+                    html.P("Input stock code: ", className="stockinput"),
                     html.Div([
                         dcc.Input(id="dropdown_tickers", type="text"),
                         html.Button("Submit", id='submit'),
@@ -120,7 +120,7 @@ app.layout = html.Div(
 ], [Input("submit", "n_clicks")], [State("dropdown_tickers", "value")])
 def update_data(n, val):  # inpur parameter(s)
     if n == None:
-        return "Hey there! Please enter a legitimate stock code to get details.", "https://melmagazine.com/wp-content/uploads/2019/07/Screen-Shot-2019-07-31-at-5.47.12-PM.png", "Stonks", None, None, None
+        return "Hey there! Please enter a legitimate stock code to get details.", "https://melmagazine.com/wp-content/uploads/2019/07/Screen-Shot-2019-07-31-at-5.47.12-PM.png", None, None, None, None
         # raise PreventUpdate
     else:
         if val == None:

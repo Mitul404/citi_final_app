@@ -15,7 +15,7 @@ def lstmpred(stock,n_days):
     
     df = yf.download(stock, period='2y')
     df.reset_index(inplace=True)
-    print(df.shape)
+    # print(df.shape)
     df['Day'] = df.index
 
     days = list()
@@ -32,7 +32,7 @@ def lstmpred(stock,n_days):
     scaler=MinMaxScaler(feature_range=(0,1))
     Y=scaler.fit_transform(np.array(Y).reshape(-1,1))
     ################################################
-    print(Y)
+    # print(Y)
     x_train, x_test, y_train, y_test = train_test_split(X,
                                                         Y,
                                                         test_size=0.2,
@@ -50,7 +50,7 @@ def lstmpred(stock,n_days):
     time_step = 10
     X_tr_tf, y_tr_tf = create_dataset(y_train, time_step)
     X_te_tf, y_te_tf = create_dataset(y_test, time_step)
-    print (X_te_tf.shape)
+    # print (X_te_tf.shape)
 
     X_tr_tf =X_tr_tf.reshape(X_tr_tf.shape[0],X_tr_tf.shape[1] , 1)
     X_te_tf = X_te_tf.reshape(X_te_tf.shape[0],X_te_tf.shape[1] , 1)
@@ -66,7 +66,7 @@ def lstmpred(stock,n_days):
     model.add(LSTM(50))
     model.add(Dense(1))
     model.compile(loss='mean_squared_error',optimizer='adam')
-    model.summary()
+    # model.summary()
 
     model.fit(X_tr_tf,y_tr_tf,validation_data=(X_te_tf,y_te_tf),epochs=20,batch_size=8,verbose=1)
 
@@ -87,12 +87,12 @@ def lstmpred(stock,n_days):
         if(len(temp_input)>5):
             #print(temp_input)
             x_input=np.array(temp_input[1:])
-            print("{} day input {}".format(i,x_input))
+            # print("{} day input {}".format(i,x_input))
             x_input=x_input.reshape(1,-1)
             x_input = x_input.reshape((1, time_step, 1))
             #print(x_input)
             yhat = model.predict(x_input, verbose=0)
-            print("{} day output {}".format(i,yhat))
+            # print("{} day output {}".format(i,yhat))
             temp_input.extend(yhat[0].tolist())
             temp_input=temp_input[1:]
             #print(temp_input)
@@ -101,14 +101,14 @@ def lstmpred(stock,n_days):
         else:
             x_input = x_input.reshape((1, n_steps,1))
             yhat = model.predict(x_input, verbose=0)
-            print(yhat[0])
+            # print(yhat[0])
             temp_input.extend(yhat[0].tolist())
-            print(len(temp_input))
+            # print(len(temp_input))
             lst_output.extend(yhat.tolist())
             i=i+1
         
 
-    print(lst_output)
+    # print(lst_output)
 
     ######################################3
     #model = estimator.fit(y_train)
