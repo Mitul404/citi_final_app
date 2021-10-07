@@ -1,11 +1,21 @@
+import 'package:amex_final_app/auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:amex_final_app/homepage.dart';
+import 'package:amex_final_app/wrapper.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+import 'package:amex_final_app/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-void main() {
+Future<void> main() async {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -15,9 +25,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      //debugShowCheckedModeBanner: false,
-      home:SignUp(),
+    return StreamProvider<Userabc>.value(
+      value: AuthService().user,
+      child: MaterialApp(
+        //debugShowCheckedModeBanner: false,
+        home:Wrapper(),
+      ),
     );
   }
 }
@@ -243,13 +256,24 @@ class Login extends StatelessWidget {
 }
 
 class MainPage extends StatelessWidget {
-  const MainPage({key}) : super(key: key);
+  MainPage({key}) : super(key: key);
+
+  final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+        actions: [
+          FlatButton.icon(
+            icon: Icon(Icons.person,color: Colors.white,),
+            label: Text('Log Out',style: TextStyle(color: Colors.white,fontSize: 20.0),),
+            onPressed: () async {
+              await _auth.signOut();
+            },
+          ),
+        ],
         backgroundColor: Colors.black,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -262,11 +286,11 @@ class MainPage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Image(
+            /*Image(
               image: AssetImage('assets/Image4.png'),
               height: 40.0,
               width: 40.0,
-            ),
+            ),*/
           ],
         ),
       ),
@@ -417,6 +441,9 @@ class _CredState extends State<Cred> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.blueGrey[900],
+      ),
       body: const WebView(
         initialUrl: 'https://haveibeenpwned.com/',
         javascriptMode: JavascriptMode.unrestricted,
@@ -548,7 +575,7 @@ class _StockState extends State<Stock> {
     return new Scaffold(
       body: SafeArea(
         child: const WebView(
-          initialUrl: 'http://stocks-dash.herokuapp.com/',
+          initialUrl: 'https://aniket-stock.herokuapp.com/',
           javascriptMode: JavascriptMode.unrestricted,
         ),
       ),
@@ -599,18 +626,18 @@ class _LoanState extends State<Loan> {
 
   Interpreter interpreter;
   String approved;
-  int age = 20;
-  int exp = 10;
-  int income = 10;
-  int zip = 93023;
-  int fam = 2;
-  double cc = 10.0;
-  int edu = 1;
-  int mort = 1;
-  int sec = 1;
-  int cda = 1;
-  int online = 1;
-  int cred = 1;
+  int age = -1;
+  int exp = -1;
+  int income = -1;
+  int zip = -1;
+  int fam = -1;
+  double cc = -1.0;
+  int edu = -1;
+  int mort = -1;
+  int sec = -1;
+  int cda = -1;
+  int online = -1;
+  int cred = -1;
 
   double dage, dexp, dincome, dzip, dfam, dedu, dmort, dsec, dcda, donline, dcred;
 
@@ -946,6 +973,8 @@ class _LoanState extends State<Loan> {
           ),
           OutlinedButton(
             onPressed: () {
+
+
               doInference();
               showAlertDialog(context);
             },
@@ -976,8 +1005,7 @@ class _LoanState extends State<Loan> {
       Widget okButton = TextButton(
         child: Text("OK"),
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (_) => Loan()));
+          Navigator.pop(context);
         },
       );
 
@@ -1028,12 +1056,12 @@ class _LoanState extends State<Loan> {
 
     if(output[0][0]>output[0][1]){
       setState(() {
-        approved = 'Loan will not be approved';
+        approved = 'You are ELIGIBLE for Loan!!';
       });
     }
     else{
       setState(() {
-        approved = 'Loan will be approved!!!';
+        approved = 'You are NOT ELIGIBLE for Loan';
       });
     }
 
@@ -1045,8 +1073,27 @@ class _LoanState extends State<Loan> {
 
 }
 
-class PassPage extends StatelessWidget {
+class PassPage extends StatefulWidget {
   const PassPage({key}) : super(key: key);
+
+  @override
+  State<PassPage> createState() => _PassPageState();
+}
+
+class _PassPageState extends State<PassPage> {
+
+  //creting firebaseinstance
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  final _formKey = GlobalKey<FormState>();
+  String oldpass='';
+  String newpass='';
+  String confirmpass='';
+
+  Future<bool> validatePassword(String password) async {
+    //var user = await _auth.currentUser;
+    //UserCredential authresult = await _auth.reauth
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1084,79 +1131,99 @@ class PassPage extends StatelessWidget {
                     )
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
-                child: TextField(
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                  decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white,
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
+                      child: TextFormField(
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                        decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                            ),
+                          ),
+                          hintText: 'User Id',
+                          hintStyle: TextStyle(color: Colors.white),
+                        ),
                       ),
                     ),
-                    hintText: 'User id',
-                    hintStyle: TextStyle(color: Colors.white),
+
+
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
+                  child: TextFormField(
+                    onChanged: (val) {oldpass=val;},
+                    obscureText: true,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                    decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                        ),
+                      ),
+                      hintText: 'Current Password',
+                      hintStyle: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
-                child: TextField(
-                  obscureText: true,
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                  decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                      ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
+                  child: TextFormField(
+                    onChanged: (val) {newpass=val;},
+                    obscureText: true,
+                    style: TextStyle(
+                      color: Colors.white,
                     ),
-                    hintText: 'Current Password',
-                    hintStyle: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                        ),
+                      ),
+                      hintText: 'New password',
+                      hintStyle: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
-                child: TextField(
-                  obscureText: true,
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                  decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                      ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
+                  child: TextFormField(
+                    validator: (val) {return newpass == val ? null : 'Enter valid password';},
+                    obscureText: true,
+                    style: TextStyle(
+                      color: Colors.white,
                     ),
-                    hintText: 'New password',
-                    hintStyle: TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                        ),
+                      ),
+                      hintText: 'Confirm password',
+                      hintStyle: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
-                child: TextField(
-                  obscureText: true,
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                  decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                      ),
-                    ),
-                    hintText: 'Confirm new password',
-                    hintStyle: TextStyle(color: Colors.white),
-                  ),
+                  ],
                 ),
               ),
               OutlinedButton(
-                onPressed: () {},
+                onPressed: () {
+                  User u = _auth.currentUser;
+                  if(_formKey.currentState.validate())
+                    {
+                      print('VALID');
+                      print(oldpass);
+                      print(newpass);
+                    }
+                },
                 child: Text(
                   'CONFIRM',
                   style: TextStyle(
