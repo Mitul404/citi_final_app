@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "688304117535",
+    "project_id": "amex-final-app",
+    "storage_bucket": "amex-final-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:688304117535:android:a45f2a42965262afeac22a",
+        "android_client_info": {
+          "package_name": "com.example.amex_final_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "688304117535-h3hq7q2pu0lnbe30el3b6qf4r7fidor3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRNqzM9eej6vjyn9NFNBGjl1HCQINjv24"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "688304117535-h3hq7q2pu0lnbe30el3b6qf4r7fidor3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
