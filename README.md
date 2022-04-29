@@ -1,4 +1,4 @@
-# amex_final_app
+# citi_final_app
 
 A new Flutter application.
 
